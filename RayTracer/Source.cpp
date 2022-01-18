@@ -22,11 +22,13 @@ int main() {
 	sf::RenderWindow window(sf::VideoMode(2560, 1440), "RayCaster", sf::Style::Fullscreen);
 	window.setFramerateLimit(60.0f);
 	window.setKeyRepeatEnabled(false);
-	RayCamera cam(sf::Vector2u(640, 360));
+	RayCamera cam(sf::Vector2u(1280, 720));
 	sf::Vector3f cross = VectorMath::corssProduct(sf::Vector3f(1, 0, 0), sf::Vector3f(0, 1, 0));
 	std::cout << "Cross of a and b is: " << cross.x << " " << cross.y << " " << cross.z << std::endl;
 	sf::Vector3f movement = sf::Vector3f(0, 0, 0);
 	sf::Vector3f rotation = sf::Vector3f(0, 0, 0);
+	sf::Clock clock1;
+
 	while (window.isOpen())
 	{
 
@@ -42,6 +44,7 @@ int main() {
 			}
 
 		}
+		clock1.restart();
 		window.clear();
 		
 		movement.x = 1.0f * sf::Keyboard::isKeyPressed(sf::Keyboard::W) - 1.0f * sf::Keyboard::isKeyPressed(sf::Keyboard::S);
@@ -55,5 +58,8 @@ int main() {
 		window.draw(cam.renderImage());
 		
 		window.display();
+
+		auto a = clock1.getElapsedTime();
+		std::cout << "FrameTime: " << a.asMilliseconds() << "ms\n";
 	}
 }

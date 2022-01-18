@@ -9,6 +9,24 @@
 #include "ChunkTree.h"
 #include "TreeRay.h"
 
+/*
+Benchmarks: (Kortaste frametimes under ca 100 frames)
+1.
+	Release: 187ms
+	Debug:   1667ms
+
+2.
+	Release: 181ms
+	
+3.
+	Release: 174ms
+
+4.
+	Release: 162ms
+
+
+
+*/
 
 class RayCamera {
 private:

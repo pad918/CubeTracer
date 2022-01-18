@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <SFML/Graphics.hpp>
+#include <stdexcept>
 #include "ChunkTree.h"
 #include "VectorMath.h"
 
@@ -11,7 +12,10 @@ private:
 	//Variables:
 	sf::Vector3f direction;
 	int lastBlockFace = 0;
+	float stepX, stepY, stepZ;
+	float tDeltaX, tDeltaY, tDeltaZ;
 public:
+	//Search variables
 	TreeRay(Octree * rootTree, sf::Vector3f direction);
 	int shoot(sf::Vector3f relativePosition);
 	int reps = 0;

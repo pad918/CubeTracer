@@ -71,14 +71,14 @@ RayCamera::RayCamera(sf::Vector2u windowSize)
 	palette[6] = sf::Color(180, 142, 173);
 	palette[7] = sf::Color(136, 192, 208);
 
-	position = sf::Vector3f(5.5f, 3.0f, 15.5f);
+	position = sf::Vector3f(5.5f, 3.0f, 25.5f);
 	//position = sf::Vector3f(4.0f, 4.0f, 0.5f);
 	//cameraDirection = sf::Vector3f(-1, -0.2f, 0);
-	cameraDirection = sf::Vector3f(0.0f, 1, 0);
+	cameraDirection = sf::Vector3f(1.0f, 1, -1);
 	cameraSize = sf::Vector2i(windowSize.x, windowSize.y);
 	image.create(windowSize.x, windowSize.y);
 	sprite.setPosition(sf::Vector2f(0, 0));
-	sprite.setScale(sf::Vector2f(4.0f, 4.0f)); // 4.0
+	sprite.setScale(sf::Vector2f(2.0f, 2.0f)); // 4.0
 	imgTexture.create(cameraSize.x, cameraSize.y);
 	for (int x = 0; x < WORLD_SIZE; x++)
 		for (int y = 0; y < WORLD_SIZE; y++)
@@ -92,9 +92,10 @@ RayCamera::RayCamera(sf::Vector2u windowSize)
 	//}
 	for (int x = 0; x < WORLD_SIZE; x++) {
 		for (int y = 0; y < WORLD_SIZE; y++) {
-			int groundLevel = rand() % 5 + 10;
+			float dist = 16 - std::sqrt(VectorMath::magnitudeSquared(sf::Vector3f(16.0f-x, 16.0f-y, 0)));
+			int groundLevel = rand() % 5 + 10 + dist*0.75f;
 			for (int z = 0; z < groundLevel && z < WORLD_SIZE; z++) {
-				cubes[x][y][z] = groundLevel>13 ? 5 : 4;
+				cubes[x][y][z] = groundLevel>13 ? (groundLevel>18 ? 1 : 5) : 4;
 			}
 		}
 	}
@@ -217,7 +218,7 @@ void RayCamera::update(sf::Vector3f movement, sf::Vector3f rotation)
 
 	movement *= 0.3f;
 	sf::Vector3f right = VectorMath::corssProduct(sf::Vector3f(0, 0, 1), cameraDirection);
-	std::cout << "Movement  = " << movement.x << " " << movement.y << "\n";
+	//std::cout << "Movement  = " << movement.x << " " << movement.y << "\n";
 	position += cameraDirection * movement.x;
 	position += right * movement.y;
 	
@@ -230,6 +231,6 @@ void RayCamera::update(sf::Vector3f movement, sf::Vector3f rotation)
 
 	cameraDirection = newRotation;
 	VectorMath::normalize(cameraDirection);
-	std::cout << "POSITON: " << position.x << " " << position.y << " " << position.z << "\n";
-	std::cout << "ROTATION: " << cameraDirection.x << " " << cameraDirection.y << " " << cameraDirection.z << "\n";
+	//std::cout << "POSITON: " << position.x << " " << position.y << " " << position.z << "\n";
+	//std::cout << "ROTATION: " << cameraDirection.x << " " << cameraDirection.y << " " << cameraDirection.z << "\n";
 }
