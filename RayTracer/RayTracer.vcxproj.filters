@@ -19,6 +19,9 @@
     <Filter Include="Header Files\Chunks">
       <UniqueIdentifier>{8f82b087-ac11-491a-9f1a-acd6d84fdb50}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\data oriented">
+      <UniqueIdentifier>{fe8c2d1c-6a6d-4509-884c-1df45d9d16c2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
@@ -32,15 +35,6 @@
     </ClCompile>
     <ClCompile Include="Ray.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Sphere.cpp">
-      <Filter>Header Files\old</Filter>
-    </ClCompile>
-    <ClCompile Include="Plane.cpp">
-      <Filter>Header Files\old</Filter>
-    </ClCompile>
-    <ClCompile Include="Cube.cpp">
-      <Filter>Header Files\old</Filter>
     </ClCompile>
     <ClCompile Include="TreeRay.cpp">
       <Filter>Source Files</Filter>
@@ -59,23 +53,11 @@
     <ClInclude Include="VectorMath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Plane.h">
-      <Filter>Header Files\old</Filter>
-    </ClInclude>
-    <ClInclude Include="Sphere.h">
-      <Filter>Header Files\old</Filter>
-    </ClInclude>
-    <ClInclude Include="WorldObject.h">
-      <Filter>Header Files\old</Filter>
-    </ClInclude>
     <ClInclude Include="Definitions.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="PublicArray.h">
       <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Cube.h">
-      <Filter>Header Files\old</Filter>
     </ClInclude>
     <ClInclude Include="TreeRay.h">
       <Filter>Header Files</Filter>

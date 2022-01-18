@@ -4,14 +4,14 @@
 #define sgn(x) (x>=0 ? 1 : -1)
 
 
-TreeRay::TreeRay(Octree* rootTree,  sf::Vector3f direction)
+TreeRay::TreeRay(sf::Vector3f worldPosition, Octree* root)
 {
-	this->direction = direction;
-	root = rootTree;
+	startRelativePositon = (1.0f / 32.0f) * (worldPosition - sf::Vector3f(16.0f, 16.0f, 16.0f));
+	this->root = root;
 }
 
 //Relative position is in the parets cordinate system between -0.5 and 0.5;
-int TreeRay::search(Octree* parent, sf::Vector3f relativePosition, int scale)
+int TreeRay::search(Octree* parent, const sf::Vector3f relativePosition, int scale)
 {
 	reps++;
 	int dx = (relativePosition.x >= 0) ? 1 : 0;
@@ -95,9 +95,32 @@ int TreeRay::search(Octree* parent, sf::Vector3f relativePosition, int scale)
 	return 0;
 }
 
-//shoot the ray
-int TreeRay::shoot(sf::Vector3f relativePosition)
+int TreeRay::searchNonRecursive()
 {
+	/* 
+	Anledning:
+		Simd och kanske snabbare av sig självt
+
+	STEG:
+		Flera nästade loopar
+		???
+	*/
+	for (int i1 = 0; i1 < 4; i1++) {
+		/*If current node is not empty, search deeper, elese: search forward */
+
+
+		for (int i2 = 0; i2 < 4; i2++) {
+
+		}
+	}
+
+	return 0;
+}
+
+//shoot the ray
+int TreeRay::shoot(sf::Vector3f thisItterationDirction)
+{
+	this->direction = thisItterationDirction;
 	//Pre calculations
 	stepX = sgn(direction.x);
 	stepY = sgn(direction.y);
@@ -108,8 +131,5 @@ int TreeRay::shoot(sf::Vector3f relativePosition)
 	tDeltaY = stepY * 1.0f / direction.y;
 	tDeltaZ = stepZ * 1.0f / direction.z;
 
-	//Start recursive search of the octree:
-	//Calculate relative position (relative to (16, 16))
-	sf::Vector3f rel = (1.0f/32.0f)* (relativePosition - sf::Vector3f(16.0f, 16.0f, 16.0f));
-	return search(root, rel, 5);
+	return search(root, startRelativePositon, 5);
 }

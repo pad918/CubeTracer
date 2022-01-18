@@ -125,13 +125,14 @@ RayCamera::RayCamera(sf::Vector2u windowSize)
 sf::Sprite RayCamera::renderImage()
 {
 	time += 0.01f;
-
+	int minReps = 1000, maxReps = 0;
 	//std::cout << "Render, time = " << time << "\n";
 	sf::Uint8* pixels = new sf::Uint8[((long)cameraSize.x) * ((long)cameraSize.y) * 4l];
 	std::memset(pixels, 0, (long)cameraSize.x * (long)cameraSize.y * 4);
 	//Camera forward vector
 	sf::Vector3f forward = cameraDirection;
 	VectorMath::normalize(forward);
+	TreeRay ray(position, cubeTree.chunkRoot);
 
 	//Relative vectors
 	sf::Vector3f right = VectorMath::corssProduct(sf::Vector3f(0, 0, 1), forward);
@@ -144,22 +145,9 @@ sf::Sprite RayCamera::renderImage()
 			sf::Color col = sf::Color(46, 52, 64);
 			float brightness = 255.0f;
 			int i = 0;
-			/*
-			Ray ray(position, rayDirection);
-			int i = 0;
-			for (; i < 200 && ray.isInBounds(); i++, ray.step()) {
-				int blockColor = cubes[ray.blockPosition.x][ray.blockPosition.y][ray.blockPosition.z];
-				if (blockColor != 0) {
-					col = palette[blockColor-1];
-					int val = ray.getFaceValue();
-					brightness = shadowPalette[val];
-					break;
-				}
-			}
-			*/
-			//NYTT (TEST)
-			TreeRay ray(cubeTree.chunkRoot, rayDirection);
-			int val = ray.shoot(position);
+
+			//TreeRay ray(cubeTree.chunkRoot, rayDirection);
+			int val = ray.shoot(rayDirection/*position*/);
 			if (val != 0) {
 				col = palette[val];
 				int val = ray.getFaceValue();
@@ -167,7 +155,10 @@ sf::Sprite RayCamera::renderImage()
 			}
 			i = ray.reps;
 			//std::cout << "REaps: " << i << "\n";
-			//SLUT
+
+			/*TEST*/
+			maxReps = (maxReps < i) ? i : maxReps;
+			minReps = (i < minReps) ? i : minReps;
 
 			if (!drawComplexity) {
 				//Draw the pixel
@@ -176,14 +167,6 @@ sf::Sprite RayCamera::renderImage()
 				pixels[a + 1] = (sf::Uint8)col.g;
 				pixels[a + 2] = (sf::Uint8)col.b;
 				pixels[a + 3] = brightness; //255
-				//Draw on multiple rows
-				//for (int i = 0; i < 1 && y < (cameraSize.y - 0 - 1); i++) {
-				//	int b = 4 * ((y + i) * cameraSize.x + x);
-				//	pixels[b + 0] = pixels[a + 0];
-				//	pixels[b + 1] = pixels[a + 1];
-				//	pixels[b + 2] = pixels[a + 2];
-				//	pixels[b + 3] = pixels[a + 3];
-				//}
 			}
 			else {
 				int a = 4 * (y * cameraSize.x + x);
@@ -202,6 +185,7 @@ sf::Sprite RayCamera::renderImage()
 	sprite.setTexture(imgTexture);
 	delete [] pixels;
 	frame++;
+	//std::cout << "Min reps = " << minReps << " | max reps = " << maxReps << "\n";
 	return sprite;
 }
 
